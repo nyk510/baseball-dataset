@@ -1,0 +1,25 @@
+import npbdata as npb
+import os
+
+if __name__ == '__main__':
+    root_path = os.getcwd()
+    req_folders = ['data']
+
+    for fld in req_folders:
+        if fld not in os.listdir(root_path):
+            os.mkdir(fld)
+            print('hoge')
+        else:
+            print('False')
+
+    df_info = npb.fetch_playerinfo(verbose='INFO')
+    df_info.to_csv('data/player_info.csv',index=False)
+
+    for st_type in ['pitcher','hitter']:
+        df_stats = npb.fetch_stats(stats_type=st_type)
+        df_stats.to_csv('data/{0}_stats.csv'.format(st_type),index=False)
+
+    start = 2009
+    end = 2015
+    df_match = npb.fetch_matchdata(start=start,end=end)
+    df_match.to_csv('data/match_data_from{0}-to{1}.csv'.format(start,end),index=False)
