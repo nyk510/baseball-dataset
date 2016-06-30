@@ -16,18 +16,18 @@ logger.setLevel('INFO')
 logger.addHandler(handler)
 
 NAME_LIST = [
-    ["c","広"],
-    ["g","巨"],
-    ["t","阪"],
-    ["d","中"],
-    ["yb","横"],
-    ["s","ヤ"],
-    ['h','ソ'],
-    ['f','日'],
-    ['m','マ'],
-    ['l','西'],
-    ['e','楽'],
-    ['bs','オ']
+    ["c",u"広"],
+    ["g",u"巨"],
+    ["t",u"阪"],
+    ["d",u"中"],
+    ["yb",u"横"],
+    ["s",u"ヤ"],
+    ['h',u'ソ'],
+    ['f',u'日'],
+    ['m',u'マ'],
+    ['l',u'西'],
+    ['e',u'楽'],
+    ['bs',u'オ']
 ]
 
 def fetch_playerinfo(verbose='INFO'):
@@ -117,16 +117,23 @@ def fetch_matchdata(start=2015,end=2016,verbose=1):
     df['Date'] = pd.to_datetime(df['Date'])
     return df
 
-def fetch_stats(stats_type='pitcher'):
+def fetch_stats(year=2016,stats_type='pitcher'):
     """スタッツ（成績）を取得します
 
+    year :  取得する年度．2009 ~ 2016で指定
+    stats_type : 取得する成績を指定．pitcher or hitter
+
+    Return Datafram Style
+    ================================================
+    columns : Team,背番号,選手名,防御率,試合,勝利,敗北,セlブ,ホlルド,勝率,打者,投球回,被安打,被本塁打,与四球,与死球,奪三振,失点,自責点,WHIP,DIPS
+    ex.) 広,42,ジョンソン,2.15,14,7,5,0,0,.583,408,100.1,75,3,34,2,78,28,24,1.09,3.00
     stats_type: pitcher or hitter
     """
-    base_url = None
+    base_url ='http://baseball-data.com/'
     if stats_type == 'pitcher':
-        base_url = "http://baseball-data.com/stats/pitcher-"
+        attr_url = "/stats/pitcher-"
     elif stats_type == 'hitter':
-        base_url = "http://baseball-data.com/stats/hitter-"
+        attr_url = "/stats/hitter-"
     else:
         logger.warning('statsが不正です')
         return None
@@ -135,8 +142,17 @@ def fetch_stats(stats_type='pitcher'):
     contents = []
     parser = lxml.html.HTMLParser(encoding='utf-8')
 
+    year_url = ''
+    if year != 2016:
+        if 2009 <= year <= 2015:
+            year_url = str(year-2000)
+        else:
+            logger.warning('invalid year')
+            raise
+
+
     for i,names in enumerate(NAME_LIST):
-        target_url = base_url + names[0] + "/"
+        target_url = base_url + year_url + attr_url + names[0] + "/"
         teamname = names[1]
         tree = lxml.html.parse(target_url,parser)
         if i == 0:
@@ -152,6 +168,7 @@ def fetch_stats(stats_type='pitcher'):
             contents.append(data)
     mydf = pd.DataFrame(contents)
     mydf.columns = header
+    mydf = mydf.rename(columns = {'セlブ':'セーブ','ホlルド':'ホールド'})
     return mydf
 
 if __name__ == '__main__':
