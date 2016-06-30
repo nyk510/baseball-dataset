@@ -13,13 +13,13 @@ if __name__ == '__main__':
             print('False')
 
     df_info = npb.fetch_playerinfo(verbose='INFO')
-    df_info.to_csv('data/player_info.csv',index=False)
+    df_info.to_csv('data/player_info.csv',index=False,encoding='utf-8')
 
     for st_type in ['pitcher','hitter']:
         df_stats = npb.fetch_stats(stats_type=st_type)
-        df_stats.to_csv('data/{0}_stats.csv'.format(st_type),index=False)
+        df_stats.to_csv('data/{0}_stats.csv'.format(st_type),index=False,encoding='utf-8')
 
     start = 2009
     end = 2015
     df_match = npb.fetch_matchdata(start=start,end=end)
-    df_match.to_csv('data/match_data_from{0}-to{1}.csv'.format(start,end),index=False)
+    df_match.to_csv('data/match_data_from{0}-to{1}.csv'.format(start,end),index=False,encoding='utf-8')

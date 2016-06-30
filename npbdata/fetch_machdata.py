@@ -103,6 +103,7 @@ def fetch_matchdata(start=2015,end=2016,verbose=1):
                     date_list = datestring.strip("日").split("月")
                     # make_date_string(ex:2015/4/18)
                     date = str(year)+"/"+date_list[0]+"/"+date_list[1]
+                    logger.debug(date)
                     continue
                 if len(td_obj.text_content()) == 1:
                     continue
@@ -110,6 +111,7 @@ def fetch_matchdata(start=2015,end=2016,verbose=1):
                 text = team_p[0].text_content()
                 text2 = team_p[1].text_content()
                 data = [date,text[0],text[1:-1].split("-")[0].strip(" "),text[-1],text[1:-1].split("-")[-1].strip(),text2[:-5],text2[-5:]]
+                logger.debug(data)
                 contents.append(data)
     df = pd.DataFrame(contents,columns=["Date","HomeTeam","HomePoint","AwayTeam","AwayPoint","Studium","StartTime"])
     df['Date'] = pd.to_datetime(df['Date'])
@@ -153,7 +155,9 @@ def fetch_stats(stats_type='pitcher'):
     return mydf
 
 if __name__ == '__main__':
-    df = fetch_matchdata(2015,2015)
+    import sys
+    print(sys.version)
+    df = fetch_matchdata(2015,2015,verbose=2)
     print(df.head())
     df = fetch_playerinfo(verbose='INFO')
     print(df.sample())
