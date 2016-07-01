@@ -132,8 +132,10 @@ def fetch_stats(year=2016,stats_type='pitcher'):
     base_url ='http://baseball-data.com/'
     if stats_type == 'pitcher':
         attr_url = "/stats/pitcher-"
+        option_url = ''
     elif stats_type == 'hitter':
-        attr_url = "/stats/hitter-"
+        attr_url = "/stats/hitter2-"
+        option_url = 'tpa-1.html'
     else:
         logger.warning('statsが不正です')
         return None
@@ -152,7 +154,7 @@ def fetch_stats(year=2016,stats_type='pitcher'):
 
 
     for i,names in enumerate(NAME_LIST):
-        target_url = base_url + year_url + attr_url + names[0] + "/"
+        target_url = base_url + year_url + attr_url + names[0] + "/" + option_url
         teamname = names[1]
         tree = lxml.html.parse(target_url,parser)
         if i == 0:
@@ -178,6 +180,6 @@ if __name__ == '__main__':
     print(df.head())
     df = fetch_playerinfo(verbose='INFO')
     print(df.sample())
-    df = fetch_stats(stats_type='pitcher')
+    df = fetch_stats(stats_type='hitter')
     print(df.sample(10))
-    df.to_csv('pitcher.csv',index=False)
+    df.to_csv('pitcher.csv',index=False,encoding='utf-8')
