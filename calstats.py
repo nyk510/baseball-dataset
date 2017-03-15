@@ -18,6 +18,12 @@ def calclate_ratio_index(dataframe):
     # (安打 + 四球 + 死球) ÷ (打数 + 四球 + 死球 + 犠飛)
     df['OBP'] = (df['hit'] + df['bb']) / (df['ab'] + df['bb'])
 
+    # 三振率
+    df['KP'] = df['k'] / df['pa']
+
+    # 四死球率
+    df['BP'] = df['bb'] / df['pa']
+
     # 長打率
     # 塁打/打数
     df['SLG'] = df['bases'] / df['ab']

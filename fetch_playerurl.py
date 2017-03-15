@@ -106,7 +106,8 @@ def convert_j2df(jdata):
 
 if __name__ == '__main__':
 
-    df_purl = get_urls(league='c')
+    df_purl = get_urls(league='p')
+    df_purl = df_purl.append(get_urls(league='c'))
     datas = []
     for i,row in df_purl.iterrows():
         url = BASE_URL + row['url'][:-5] + 'S.txt'
