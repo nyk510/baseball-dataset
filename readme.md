@@ -1,35 +1,65 @@
 # Baseball Dataset
 
-## 説明
-NPBのデータを取ってきて色々やりたーいのでデータセット作りました。
+日本プロ野球のデータを取得するモジュール `npbdata` を管理するリポジトリです.
 
-## データセットの説明
+## Requirements
 
-どういうデータが入ってるかざっくりと説明します。
+```txt
+joblib==0.11
+jupyter==1.0.0
+lxml==4.2.1
+matplotlib==2.1.0
+notebook==5.2.1
+numpy==1.14.2
+pandas==0.21.0
+python-dotenv==0.8.2
+tqdm==4.19.4
+```
 
-### player_info_table.csv
+## Usage
 
-選手の身長とか体重みたいな、個人的特徴ベクトル
+### 打者のデータの取得
 
-+ team
-+ 体重
-+ 身長
-+ 出身県（国）
-+ 年俸
+```bash
+python fetch_hitters.py
+```
 
-### pitcher(hitter)+年号.csv
-その年の投手野手の公式記録。
+実行すると, 2008 年から 2017 年までの規定打席に到達した打者の打撃結果を取得し `./data/hitters/{year}` 配下に tsv ファイルとして保存します.
 
-+ 登板数
-+ 勝利数
+```txt
+./
+├── Dockerfile
+├── data
+│   └── hitters
+│       ├── 2012
+│       │   ├── サブロー.tsv
+│       │   ├── バルディリス.tsv
+│       │   ├── フェルナンデス.tsv
+│       │   ├── ヘルマン.tsv
+│       │   ├── ペーニャ.tsv
+│       │   ├── マートン.tsv
+│       │   ├── ミレッジ.tsv
+│       │   ├── ラミレス.tsv
+│       │   ├── 阿部慎之助.tsv
+│       │   ├── 井口資仁.tsv
+│       │   ├── 井端弘和.tsv
+│       │   ├── 稲葉篤紀.tsv
+│       │   ├── 岡田幸文.tsv
+│       │   ├── 角中勝也.tsv
+│       │   ├── 銀次.tsv
+│       │   ├── 栗山巧.tsv
+│       │   ├── 後藤光尊.tsv
+│       │   ├── 荒波翔.tsv
+│       │   ├── 荒木雅博.tsv
+│       │   ├── 今江敏晃.tsv
+│       │   ├── 根元俊一.tsv
+│       │   ├── 坂本勇人.tsv
+│       │   ├── 糸井嘉男.tsv
+│       │   ├── 秋山翔吾.tsv
+```
 
-みたいな、ちょっと粒度の大きめのデータ
+### 試合結果の取得
 
-### match_up_table.csv
-
-対戦記録。現在2009~2015までの全試合を格納.
-
-* 場所
-* Home Team
-* Away Team
-* Start Time
+```bash
+python main.py
+```
