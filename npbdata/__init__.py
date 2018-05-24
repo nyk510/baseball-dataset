@@ -1,3 +1,3 @@
 """init for npbdata
 """
-from .fetch_machdata import fetch_matchdata,fetch_playerinfo,fetch_stats
+from .fetch_machdata import fetch_all_matches, fetch_player_info, fetch_stats
