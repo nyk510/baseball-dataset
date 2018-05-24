@@ -16,6 +16,13 @@ python-dotenv==0.8.2
 tqdm==4.19.4
 ```
 
+## Prepare
+
+```bash
+docker build -t npb .
+docker run -it --name npb-data -p 7000:8888 -v ${PWD}:/npb npb
+```
+
 ## Usage
 
 ### 打者のデータの取得
