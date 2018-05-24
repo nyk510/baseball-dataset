@@ -1,8 +1,15 @@
+"""
+fetch hitters.py
+
+打者の成績を取得して `/data/hitters/{year}` に保存していくスクリプト
+各ディレクトリには `{player_name}.tsv` の形式で打席結果が保存される
+"""
+
 import os
 
 from joblib import Parallel, delayed
 
-from npbdata.hitters import fetch_hitter_data, convert_json2df
+from npbdata.hitters import fetch_hitter_data
 from npbdata.utils import get_logger
 
 logger = get_logger(__name__)

@@ -121,9 +121,18 @@ def get_player_data(row):
     return data
 
 
-def fetch_hitter_data(year):
+def fetch_hitter_data(year, n_jobs=-1):
+    """
+    当該年度の規定打席に到達した打者の各打席ごとの記録を取得するメソッド
+
+    :param int year:
+    :return: `data`, `name` を key に持つ dict
+        data: 行に打席の結果が入った DataFrame
+        name: 選手名の string
+    :rtype: dict
+    """
     df_purl = get_urls(league='p', year=year)
     df_purl = df_purl.append(get_urls(league='c', year=year))
 
-    hitter_data = Parallel(n_jobs=-1, verbose=10)([delayed(get_player_data)(row) for _, row in df_purl.iterrows()])
+    hitter_data = Parallel(n_jobs, verbose=10)([delayed(get_player_data)(row) for _, row in df_purl.iterrows()])
     return hitter_data
