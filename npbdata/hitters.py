@@ -50,6 +50,7 @@ def get_urls(league='c', year=2017):
                 }
                 df_player_url = df_player_url.append(row, ignore_index=True)
             break
+    df_player_url["year"] = year
     return df_player_url
 
 
@@ -68,7 +69,7 @@ def fetch_json(url):
     return data
 
 
-def convert_json2df(iterable_data):
+def convert_json2df(iterable_data, year):
     """
     json の配列を DataFrame に変換する
 
@@ -87,7 +88,7 @@ def convert_json2df(iterable_data):
             continue
 
         if date_i != '':
-            date = '2016/' + date_i
+            date = '{year}/{date_i}'.format(**locals())
             at_bats = 1
         else:
             # date_i が空白の時同日の次の打席なので at_bat を +1 する
@@ -113,7 +114,7 @@ def convert_json2df(iterable_data):
 
 def get_player_data(row):
     json_data = fetch_json(row.json_url)
-    df = convert_json2df(json_data)
+    df = convert_json2df(json_data, row.year)
     data = {
         'data': df,
         'name': row['name'],
